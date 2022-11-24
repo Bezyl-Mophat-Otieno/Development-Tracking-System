@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Devtrac </title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+  <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="pieces/topnavbar :: navbar"></div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Projects</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav" th:each="project : ${listProjects}">
+        <a class="nav-link" th:href="@{/issues/list/{id}(id=${project.id})}"
+           th:text="${project.projectTitle}"></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid"> <!-- border border-primary -->
+  <h1 th:text="${ProjectDets.projectTitle}"></h1>
+  <div class="row">
+    <div class="col-3">
+      <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr><th>Issues<a
+                th:href="@{/issues/NewIssue/{curpjtid}(curpjtid=${CurrProjectID})}" class="btn
+btn-primary btn-sm mb-3 ">New Issue</a></th> </tr>
+        <tr><td><form class="d-flex">
+          <div class="container">
+            <div class="row g-2">
+              <div class="form-check col">
+                <input class="form-check-input" type="checkbox" value=""
+                       id="flexCheckDefault">
+                <label class="form-check-label"
+                       for="flexCheckDefault">Open</label
+              </div>
+              <div class="form-check col">
+                <input class="form-check-input" type="checkbox" value=""
+                       id="flexCheckDefault">
+                <label class="form-check-label"
+                       for="flexCheckDefault">Design</label>
+              </div>
+              <div class="form-check col">
+                <input class="form-check-input" type="checkbox" value=""
+                       id="flexCheckDefault">
+                <label class="form-check-label"
+                       for="flexCheckDefault">Dev</label>
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="form-floating col-9">
+                <input class="form-control me-2" type="search"
+                       placeholder="Search" aria-label="Search">
+              </div>
+              <button class="btn btn-outline-success col-3"
+                      type="submit">Search</button>
+            </div>
+          </div>
+        </form>
+        </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="issue : ${listIssues}">
+          <td><a th:text="${issue.issueTitle}"
+                 th:href="@{/issues/list/{curpjtid}/{issid} (curpjtid=${CurrProjectID},
+issid=${issue.id})}"></a></td></tr>
+        <!-- <td><a th:href="@{/issues/list/{curpjtid}/{issid}
+        (curpjtid=${CurrProjectID}, issid=${issue.id})}" class="btn
+        btn-primary">Details</a></td> -->
+        </tbody>
+      </table>
+    </div>
+    <div class="col-5">
+      <form action="#" th:action="@{/issues/saveissue}" th:object="${thisIssue}"
+            method="POST">
+        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{projectID}" />
+        <div class="row g-2">
+          <div class="form-floating mb-3 col-8">
+            <input type="text" class="form-control" th:field="*{issueTitle}"
+                   id="issueTitle">
+            <label for="issueTitle">Issue Title</label>
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" th:field="*{description}"
+                 id="descriptionF" >
+          <label for="descriptionF">Description</label>
+        </div>
+        <div class="form-floating mb-3">
+<textarea class="form-control" th:field="*{design}"
+          id="design" ></textarea>
+          <label for="Design">Design</label>
+        </div>
+        <div class="row g-2">
+          <div class="form-floating mb-3 col-4">
+            <input type="date" class="form-control" th:field="*{dateReported}"
+                   id="dateReported" >
+            <label for="DateReported">DateReported</label>
+          </div>
+          <div class="form-floating mb-3 col-4">
+            <select class="form-select" th:field="*{issueStatus}" id="issueStatus"
+                    aria-label="Floating label select example">
+              <option value="0" selected>Select Status</option>
+              <option th:each="payMethod : ${issueStatusList}"
+                      th:value="${payMethod.id}"
+                      th:text="${payMethod.statusName}"></option>
+            </select>
+            <label for="issueStatus">Issue Status</label>
+          </div>
+          <div class="form-floating mb-3 col-4">
+            <select class="form-select" th:field="*{issuePriority}"
+                    id="issuePriority" aria-label="Floating label select example">
+              <option value="0" selected>Select Priority</option>
+              <option th:each="priority : ${issuePriorsList}"
+                      th:value="${priority.id}"
+                      th:text ="${priority.name}"></option>
+            </select>
+            <label for="issueStatus">Issue Status</label>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="form-floating mb-3 col-4">
+            <select class="form-control form-select" aria-label="Default select
+example" th:field="*{issueType}" id="issueType" >
+              <!-- <option th:value="'0'" th:text="Select Type of Issue"></option>
+              <option th:value="'1'" th:text="Enhancement"></option>
+              <option th:value="'2'" th:text="Bug"></option> -->
+              <option value="0" >Select Type of Issue</option>
+              <option value="1" >Enhancement</option>
+              <option value="2" >Bug</option>
+            </select>
+            <label for="issueType">Issue Type</label>
+          </div>
+          <!-- <div class="form-floating mb-3 col-4">
+<input type="text" class="form-control" th:field="*{issuePriority}"
+id="issuePriority" >
+<label for="issuePriority">Issue Priority</label>
+</div> -->
+          <div class="form-floating mb-3 col-4">
+            <input type="text" class="form-control" th:field="*{developer}"
+                   id="developer" >
+            <label for="developer">Developer</label>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="form-floating mb-3 col-4">
+            <input type="text" class="form-control" th:field="*{estimatedTime}"
+                   id="estimatedTime" >
+            <label for="estimatedTime">estimatedTime</label>
+          </div>
+          <div class="form-floating mb-3 col-4">
+            <input type="text" class="form-control" th:field="*{hoursTaken}"
+                   id="hoursTaken" >
+            <label for="hoursTaken">hoursTaken</label>
+          </div>
+          <div class="form-floating mb-3 col-4">
+            <input type="text" class="form-control" th:field="*{qa}" id="qa" >
+            <label for="qa">QA</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-info col-2"> Save Issue Details</button>
+      </form>
+    </div>
+    <!-- Issue Log -->
+    <div class="col-4 border">
+      <div class="row g-1">
+        <div class="col-3">Date </div>
+        <div class="col-2">Hours</div>
+        <div class="col-6">Description</div>
+        <input class="form-control" type="hidden" id="">
+        <div class="col-1">
+        </div>
+      </div>
+      <form action="#" th:action="@{/issues/saveissuelog/{curpjtid}
+(curpjtid=${CurrProjectID})}" th:object="${newIssueLog}" method="POST">
+        <div class="row g-1">
+          <div class="col-3"><input type="date" class="form-control"
+                                    th:field="*{logDate}"
+                                    id="date"
+                                    placeholder="Date"
+                                    aria-label="Date">
+          </div>
+          <div class="col-2"><input type="text" class="form-control"
+                                    th:field="*{hours}"
+                                    id="hours"
+                                    placeholder="Hours"
+                                    aria-label="Hours"> </div>
+          <div class="col-6"><input type="text" class="form-control"
+                                    th:field="*{description}" id="description" placeholder="Description"
+                                    aria-label="Description"> </div>
+          <div class="col-1"><button class="btn btn-primary"
+                                     type="submit">Save</button></div>
+          <input class="form-control" type="hidden" id="issueid"
+                 th:field="*{issueID}" ><!-- th:text="*{issueID}" th:object="${newIssueLog} -->
+        </div>
+      </form>
+      <table border="1" class="table table-striped table-responsive-md">
+        <tbody>
+        <tr th:each="issueLog : ${issueLogs}">
+          <td th:text="${issueLog.logDate}"></td>
+          <td th:text="${issueLog.hours}"></td>
+          <td th:text="${issueLog.description}"></td>
+          <td> <a th:href="@{/issues/updateissulog/{id}/{curpjtid}
+(id=${issueLog.id}, curpjtid=${CurrProjectID})}" class="btn
+btn-primary">Update</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

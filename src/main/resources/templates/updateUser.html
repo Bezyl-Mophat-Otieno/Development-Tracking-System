@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Devtrac</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="pieces/topnavbar :: navbar"></div>
+<div class="container">
+  <h1>User Management</h1>
+  <hr>
+  <h2>Update User Details</h2>
+  <div class="row justify-content-start">
+    <div class="col-6">
+      <form action="#" th:action="@{/umgr/saveUser}" th:object="${user}" method="POST">
+        <input type="hidden" th:field="*{id}" />
+        <input type="text" th:field="*{firstName}" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{lastName}" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{userLogon}" class="form-control mb-4 col-4">
+        <button type="submit" class="btn btn-info col-2"> Update User</button>
+      </form>
+    </div>
+    <div class="col-5">
+      <form action="#" th:action="@{/umgr/saveUserdets}" th:object="${user}" method="POST">
+        <!-- (1, "ADMIN") -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">ADMIN</label>
+        </div>
+        <!-- (2, "MANAGER") -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="2" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">MANAGER</label>
+        </div>
+        <!-- (3, "DEVELOPER") -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="3" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">DEVELOPER</label>
+        </div>
+        <!-- (4, "DEVLEAD") -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="4" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">DEVLEAD</label>
+        </div>
+        <!-- (5, "QA") -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="5" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">QA</label>
+        </div>
+        <!-- (6, "QALEAD") -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="6" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">QALEAD</label>
+        </div>
+        <button type="submit" class="btn btn-info col-2"> Update User</button>
+      </form>
+    </div>
+  </div>
+  <hr>
+  <a th:href="@{/umgr/list}"> Back to User List</a>
+</div>
+</body>
+</html>

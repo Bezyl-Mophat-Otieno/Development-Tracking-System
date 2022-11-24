@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Devtrac System</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+  <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="pieces/topnavbar :: navbar"></div>
+<div class="container">
+  <h1>[(${ProjectDets.projectTitle})]</h1>
+  <hr>
+  <h2>New Issue</h2>
+  <!-- <form action="#"
+  th:action="@{/issues/savenewissue/{curpjtid}(curpjtid=${CurrProjectID})}"
+th:object="${issue}" method="POST"> -->
+  <form action="#" th:action="@{/issues/saveissue/}" th:object="${issue}"
+        method="POST">
+    <input type="text" th:field="*{projectID}" th:value="${ProjectDets.id}" />
+    <!-- <input type="text" th:field="*{projectID}" th:value="*{projectID}"
+    class="form-control mb-4 col-4"> -->
+    <input type="text" th:field="*{issueTitle}" placeholder="Issue Title"
+           class="form-control mb-4 col-4">
+    <div class="form-floating mb-3 col-4">
+      <input type="date" class="form-control" th:field="*{dateReported}"
+             id="dateReported" >
+      <label for="Date Reported">DateReported</label>
+    </div>
+    <div class="form-floating mb-3 col-4">
+      <input type="text" class="form-control" th:field="*{issueStatus}"
+             id="issueStatus" >
+      <label for="issueStatus">Issue Status</label>
+    </div>
+    <div class="form-floating mb-3 col-4">
+      <input type="text" class="form-control" th:field="*{issuePriority}"
+             id="issuePriority" >
+      <label for="issuePriority">Issue Priority</label>
+    </div>
+    <!--
+    <input type="text" th:field="*{issueStatus}" id="issueStatus" >
+    <input type="text" th:field="*{issuepriority}" id="issuepriority" >
+    -->
+    <button type="submit" class="btn btn-info col-2"> Save Issue Title</button>
+  </form>
+  <hr>
+  <a th:href="@{/issues/list/{curpjtid}(curpjtid=${CurrProjectID})}"> Back to
+    Issues List</a>
+</div>
+</body>
+</html>
